@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "zelda-codex",
+    "slug": "zelda-codex",
+    "version": "1.0.0",
+    "orientation": "portrait",
+
+     "icon": "./assets/icons/logo.png",
+
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFCF71"
+      }
+    },
+
+    "ios": {
+      "supportsTablet": false
+    },
+
+    "assetBundlePatterns": ["**/*"]
+  }
+}
