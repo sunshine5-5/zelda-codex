@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     alignItems:"center",
     paddingHorizontal:20,
-    backgroundColor:"#E8C16C", // Fond doré clair
+    backgroundColor:"#B6771D", // Fond doré clair
   },
 
   // 🔥 IMAGE PLUS GRANDE + SHADOW
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   title:{
     fontSize:34,
     fontWeight:"900",
-    color:"#2E2100",
+    color:"#FDFDFD",
     textShadowColor:"#C89235",
     textShadowOffset:{ width:1, height:1 },
     textShadowRadius:3,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   introText:{
     fontSize:16,
     textAlign:"center",
-    color:"#2E2100",
+    color:"#FDFDFD",
     lineHeight:22,
     fontWeight:"600",
   },
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
 
   btnText:{
-    color:"white",
+    color:"#FDFDFD",
     fontSize:20,
     fontWeight:"bold",
     letterSpacing:1,
