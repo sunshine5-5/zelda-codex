@@ -4,23 +4,21 @@ import global from "../styles/global";
 
 export default function MonstersScreen({ navigation }) {
   return (
-    <View style={{ flex: 1 }}>
-      {/* Header */}
+    <View style={{ flex: 1, backgroundColor: "#B6771D" }}>
+      
       <Header navigation={navigation} />
 
-      <ScrollView style={global.page}>
+      <ScrollView style={[global.page, styles.background]}>
         
-        {/* Titre */}
         <Text style={styles.title}>la liste des monstres du monde Zelda</Text>
 
-        {/* Barre de recherche */}
         <TextInput
           placeholder="Chercher les monstres, les trésors, équipements..."
           placeholderTextColor="#626262"
           style={styles.searchBar}
         />
 
-        {/* BOX 1 — Exemple Bokoblins */}
+        {/* BOX 1 */}
         <View style={styles.card}>
           <View style={styles.cardContent}>
             <Text style={styles.cardTitle}>Bokoblins</Text>
@@ -33,7 +31,7 @@ export default function MonstersScreen({ navigation }) {
           <View style={styles.cardImagePlaceholder} />
         </View>
 
-        {/* BOX 2 — Exemple Lizalfos */}
+        {/* BOX 2 */}
         <View style={styles.card}>
           <View style={styles.cardContent}>
             <Text style={styles.cardTitle}>Lizalfos</Text>
@@ -46,7 +44,7 @@ export default function MonstersScreen({ navigation }) {
           <View style={styles.cardImagePlaceholder} />
         </View>
 
-        {/* BOX 3 — Exemple Chuchus */}
+        {/* BOX 3 */}
         <View style={styles.card}>
           <View style={styles.cardContent}>
             <Text style={styles.cardTitle}>Chuchus</Text>
@@ -65,6 +63,10 @@ export default function MonstersScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor: "#B6771D",
+  },
+
   title: {
     fontSize: 20,
     textAlign: "center",
@@ -79,8 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     marginBottom: 25,
-    fontSize: 20
-    ,
+    fontSize: 20,
   },
 
   card: {
@@ -91,7 +92,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-
     shadowColor: "#000",
     shadowOpacity: 0.18,
     shadowOffset: { width: 0, height: 2 },
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
 
-  // TEMPORAIRE — emplacement des images
   cardImagePlaceholder: {
     width: 80,
     height: 80,

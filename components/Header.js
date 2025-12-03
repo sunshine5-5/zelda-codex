@@ -6,14 +6,14 @@ export default function Header({ navigation }) {
 
   return (
     <View>
-      {/* Top bar */}
       <View style={styles.container}>
+
+        {/* ⚠️ CORRECTION : chemin du logo */}
         <Image 
           source={require("../assets/icons/logo.png")} 
           style={styles.logo} 
         />
 
-        {/* Bouton menu */}
         <TouchableOpacity onPress={() => setOpen(!open)}>
           <Image 
             source={require("../assets/icons/menu.png")} 
@@ -22,14 +22,14 @@ export default function Header({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Menu déroulant simple */}
       {open && (
         <View style={styles.dropdown}>
-          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Home"); }}>
+
+          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Monsters"); }}>
             <Text style={styles.link}>Accueil</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Monsters"); }}>
+          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("MonsterDetail"); }}>
             <Text style={styles.link}>Les monstres</Text>
           </TouchableOpacity>
 
@@ -40,6 +40,7 @@ export default function Header({ navigation }) {
           <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Treasures"); }}>
             <Text style={styles.link}>Les trésors</Text>
           </TouchableOpacity>
+
         </View>
       )}
     </View>
@@ -56,11 +57,6 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     paddingHorizontal:20,
     paddingBottom:10,
-
-    shadowColor:"#000",
-    shadowOpacity:0.2,
-    shadowOffset:{ width:0, height:3 },
-    elevation:5,
   },
 
   logo:{

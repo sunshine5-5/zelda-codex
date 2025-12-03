@@ -2,7 +2,10 @@ import colors from "./colors";
 
 export default {
   page:{
-    flex:1,backgroundColor:colors.primaryLight,paddingHorizontal:20,paddingTop:20
+    flex:1,
+    backgroundColor:colors.primaryLight
+    ,paddingHorizontal:20
+    ,paddingTop:20
   },
   title:{
     fontSize:28,fontWeight:"700",textAlign:"center",color:colors.dark
