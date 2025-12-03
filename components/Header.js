@@ -8,7 +8,7 @@ export default function Header({ navigation }) {
     <View>
       <View style={styles.container}>
 
-        {/* ⚠️ CORRECTION : chemin du logo */}
+      
         <Image 
           source={require("../assets/icons/logo.png")} 
           style={styles.logo} 

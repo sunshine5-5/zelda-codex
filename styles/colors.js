@@ -1,8 +1,8 @@
 export default {
   primary: "#C89235",
-  primaryLight: "#E8C16C",
+  primaryLight: "#B6771D",
   background: "#F1D9A9",
   dark: "#2E2100",
-  white: "#FFFFFF",
+  white: "#FDFDFD",
   card: "#F8E6C2"
 };

@@ -1,61 +1,94 @@
-import { View, Text, ScrollView, TextInput, StyleSheet } from "react-native";
+import { View, Text, ScrollView, TextInput, StyleSheet, Image, ActivityIndicator } from "react-native";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import global from "../styles/global";
 
 export default function MonstersScreen({ navigation }) {
+
+  //  DATA DES MONSTRES (API)
+
+  const [monsters, setMonsters] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // FETCH depuis l'API Hyrule Compendium
+  // 
+  useEffect(() => {
+    fetch("https://botw-compendium.herokuapp.com/api/v3/compendium/category/monsters")
+      .then(res => res.json())
+      .then(data => {
+        setMonsters(data.data); // liste des monstres
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log("Erreur API :", err);
+        setLoading(false);
+      });
+  }, []);
+
+  
+  //  Filtrage dynamique (search)
+  
+  const filtered = monsters.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <View style={{ flex: 1, backgroundColor: "#B6771D" }}>
-      
+
+      {/* NAVBAR */}
       <Header navigation={navigation} />
 
       <ScrollView style={[global.page, styles.background]}>
-        
-        <Text style={styles.title}>la liste des monstres du monde Zelda</Text>
 
-        <TextInput
-          placeholder="Chercher les monstres, les trésors, équipements..."
-          placeholderTextColor="#626262"
-          style={styles.searchBar}
-        />
+        <Text style={styles.title}>Liste des monstres du monde Zelda</Text>
 
-        {/* BOX 1 */}
-        <View style={styles.card}>
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>Bokoblins</Text>
-            <Text style={styles.cardText}>Type : monstre faible</Text>
-            <Text style={styles.cardText}>Comportement : agressif</Text>
-            <Text style={styles.cardText}>Habitat : plaines, forêts</Text>
-            <Text style={styles.cardText}>Attaque : armes basiques</Text>
-            <Text style={styles.cardText}>Force : faible à moyenne</Text>
-          </View>
-          <View style={styles.cardImagePlaceholder} />
+        {/*  SEARCHBAR */}
+        <View style={styles.searchContainer}>
+          <Image 
+            source={require("../assets/icons/search.png")} 
+            style={styles.searchIcon} 
+          />
+
+          <TextInput
+            placeholder="Chercher un monstre..."
+            placeholderTextColor="#626262"
+            style={styles.searchInput}
+            value={search}
+            onChangeText={setSearch}
+          />
         </View>
 
-        {/* BOX 2 */}
-        <View style={styles.card}>
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>Lizalfos</Text>
-            <Text style={styles.cardText}>Type : reptilien</Text>
-            <Text style={styles.cardText}>Comportement : agressif</Text>
-            <Text style={styles.cardText}>Habitat : zones humides</Text>
-            <Text style={styles.cardText}>Attaque : langue + armes</Text>
-            <Text style={styles.cardText}>Force : moyenne</Text>
-          </View>
-          <View style={styles.cardImagePlaceholder} />
-        </View>
+        {/*   LOADING */}
+        {loading && (
+          <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20 }} />
+        )}
 
-        {/* BOX 3 */}
-        <View style={styles.card}>
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>Chuchus</Text>
-            <Text style={styles.cardText}>Type : gluant</Text>
-            <Text style={styles.cardText}>Comportement : attaque proche</Text>
-            <Text style={styles.cardText}>Habitat : forêts / grottes</Text>
-            <Text style={styles.cardText}>Attaque : explosion élémentaire</Text>
-            <Text style={styles.cardText}>Force : faible</Text>
+        {/*  LISTE FILTRÉE */}
+        {!loading && filtered.map((monster, index) => (
+          <View key={index} style={styles.card}>
+
+            {/* TEXTES */}
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>{monster.name}</Text>
+              <Text style={styles.cardText}>{monster.description}</Text>
+              <Text style={styles.cardText}>
+                Lieu : {monster.common_locations?.join(", ") || "Inconnu"}
+              </Text>
+            </View>
+
+            {/* IMAGE du monstre */}
+            <Image 
+              source={{ uri: monster.image }}
+              style={styles.cardImage}
+            />
           </View>
-          <View style={styles.cardImagePlaceholder} />
-        </View>
+        ))}
+
+        {/* Aucun résultat */}
+        {!loading && filtered.length === 0 && (
+          <Text style={styles.noResult}>Aucun monstre trouvé...</Text>
+        )}
 
       </ScrollView>
     </View>
@@ -75,15 +108,31 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  searchBar: {
-    backgroundColor: "#F2F2F2",
+  /* 🔍 SearchBar */
+  searchContainer: {
+    backgroundColor: "white",
     borderRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    height: 50,
     marginBottom: 25,
-    fontSize: 20,
   },
 
+  searchIcon: {
+    width: 22,
+    height: 22,
+    tintColor: "#444",
+    marginRight: 10,
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+
+  /* 📦 Card d'un monstre */
   card: {
     backgroundColor: "white",
     borderRadius: 15,
@@ -114,10 +163,19 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
 
-  cardImagePlaceholder: {
+  /* IMAGE du monstre */
+  cardImage: {
     width: 80,
     height: 80,
-    backgroundColor: "#DDDDDD",
     borderRadius: 10,
+    resizeMode: "contain",
+  },
+
+  noResult: {
+    marginTop: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
