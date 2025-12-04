@@ -1,14 +1,15 @@
-import { View, Text, ScrollView, StyleSheet, Image, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, ActivityIndicator, TextInput } from "react-native";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 
 export default function DetailMonsterScreen({ navigation }) {
 
   const [monsters, setMonsters] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   // ================================
-  // 🐉 1) FETCH API : tous les monstres
+  // 🐉 FETCH API : tous les monstres
   // ================================
   useEffect(() => {
     fetch("https://botw-compendium.herokuapp.com/api/v3/compendium/category/monsters")
@@ -23,23 +24,46 @@ export default function DetailMonsterScreen({ navigation }) {
       });
   }, []);
 
+  // ================================
+  // 🔍 Filtrage des monstres
+  // ================================
+  const filteredMonsters = monsters.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <View style={{ flex: 1, backgroundColor: "#B6771D" }}>
 
-      {/* NAVBAR */}
+      {/* NAVBAR FIXE */}
       <Header navigation={navigation} />
 
+      {/* CONTENU SCROLL SEULEMENT */}
       <ScrollView contentContainerStyle={styles.container}>
 
         <Text style={styles.title}>Tous les monstres du monde Zelda</Text>
 
-        {/* Loader */}
+        {/* 🔍 SEARCHBAR */}
+        <View style={styles.searchContainer}>
+          <Image 
+            source={require("../assets/icons/search.png")} 
+            style={styles.searchIcon} 
+          />
+          <TextInput
+            placeholder="Chercher un monstre..."
+            placeholderTextColor="#626262"
+            style={styles.searchInput}
+            value={search}
+            onChangeText={setSearch}
+          />
+        </View>
+
+        {/* ⏳ LOADER */}
         {loading && (
           <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20 }} />
         )}
 
-        {/* LISTE DES MONSTRES */}
-        {!loading && monsters.map((monster, index) => (
+        {/* LISTE FILTRÉE DES MONSTRES */}
+        {!loading && filteredMonsters.map((monster, index) => (
           <View key={index} style={styles.card}>
 
             <Image 
@@ -58,6 +82,11 @@ export default function DetailMonsterScreen({ navigation }) {
           </View>
         ))}
 
+        {/* Aucun résultat */}
+        {!loading && filteredMonsters.length === 0 && (
+          <Text style={styles.noResult}>Aucun monstre trouvé...</Text>
+        )}
+
       </ScrollView>
     </View>
   );
@@ -73,11 +102,36 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: "center",
     color: "white",
-    marginBottom: 20,
+    marginBottom: 10,
     marginTop: 10,
     fontWeight: "800",
   },
 
+  /* 🔎 SearchBar */
+  searchContainer: {
+    backgroundColor: "white",
+    borderRadius: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    height: 50,
+    marginBottom: 20,
+  },
+
+  searchIcon: {
+    width: 22,
+    height: 22,
+    tintColor: "#444",
+    marginRight: 10,
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+
+  /* 📦 Card */
   card: {
     backgroundColor: "white",
     borderRadius: 15,
@@ -106,6 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 6,
+    textTransform: "capitalize",
   },
 
   desc: {
@@ -118,5 +173,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#555",
     fontStyle: "italic",
+  },
+
+  noResult: {
+    marginTop: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

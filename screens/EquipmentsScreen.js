@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, StyleSheet, Image, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, TextInput, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 
@@ -8,8 +8,6 @@ export default function EquipmentsScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  //  FETCH API : équipements
-  
   useEffect(() => {
     fetch("https://botw-compendium.herokuapp.com/api/v3/compendium/category/equipment")
       .then(res => res.json())
@@ -23,8 +21,6 @@ export default function EquipmentsScreen({ navigation }) {
       });
   }, []);
 
-  // Filtre dynamique
-  
   const filtered = equipments.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -35,10 +31,9 @@ export default function EquipmentsScreen({ navigation }) {
       <Header navigation={navigation} />
 
       <ScrollView contentContainerStyle={styles.container}>
-
+        
         <Text style={styles.title}>Tous les équipements</Text>
 
-        {/* SearchBar */}
         <View style={styles.searchContainer}>
           <Image 
             source={require("../assets/icons/search.png")} 
@@ -54,15 +49,14 @@ export default function EquipmentsScreen({ navigation }) {
           />
         </View>
 
-        {/* Loader */}
-        {loading && (
-          <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20 }} />
-        )}
+        {loading && <ActivityIndicator size="large" color="#fff" style={{ marginTop: 20 }} />}
 
-        {/* Liste filtrée */}
         {!loading && filtered.map((item, index) => (
-          <View key={index} style={styles.card}>
-
+          <TouchableOpacity
+            key={index}
+            style={styles.card}
+            onPress={() => navigation.navigate("EquipmentDetail", { item })}
+          >
             <Image 
               source={{ uri: item.image }}
               style={styles.image}
@@ -80,10 +74,9 @@ export default function EquipmentsScreen({ navigation }) {
               )}
             </View>
 
-          </View>
+          </TouchableOpacity>
         ))}
 
-        {/* Aucun résultat */}
         {!loading && filtered.length === 0 && (
           <Text style={styles.noResult}>Aucun équipement trouvé...</Text>
         )}
@@ -94,21 +87,9 @@ export default function EquipmentsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 15,
-    paddingBottom: 40,
-  },
+  container: { padding: 15, paddingBottom: 40 },
+  title: { fontSize: 22, textAlign: "center", color: "white", marginBottom: 20, marginTop: 10, fontWeight: "800" },
 
-  title: {
-    fontSize: 22,
-    textAlign: "center",
-    color: "white",
-    marginBottom: 20,
-    marginTop: 10,
-    fontWeight: "800",
-  },
-
-  /* SearchBar */
   searchContainer: {
     backgroundColor: "white",
     borderRadius: 30,
@@ -118,21 +99,9 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 25,
   },
+  searchIcon: { width: 22, height: 22, tintColor: "#444", marginRight: 10 },
+  searchInput: { flex: 1, fontSize: 16, color: "#333" },
 
-  searchIcon: {
-    width: 22,
-    height: 22,
-    tintColor: "#444",
-    marginRight: 10,
-  },
-
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: "#333",
-  },
-
-  /* Card */
   card: {
     backgroundColor: "white",
     borderRadius: 15,
@@ -145,43 +114,11 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
 
-  image: {
-    width: 90,
-    height: 90,
-    borderRadius: 10,
-    marginRight: 10,
-    resizeMode: "contain",
-  },
+  image: { width: 90, height: 90, borderRadius: 10, marginRight: 10, resizeMode: "contain" },
+  info: { flex: 1 },
+  name: { fontSize: 18, fontWeight: "bold", marginBottom: 6, textTransform: "capitalize" },
+  desc: { color: "#444", fontSize: 13, marginBottom: 6 },
+  stat: { fontSize: 12, color: "#333", marginTop: 5, fontWeight: "600" },
 
-  info: {
-    flex: 1,
-  },
-
-  name: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 6,
-    textTransform: "capitalize",
-  },
-
-  desc: {
-    color: "#444",
-    fontSize: 13,
-    marginBottom: 6,
-  },
-
-  stat: {
-    fontSize: 12,
-    color: "#333",
-    marginTop: 5,
-    fontWeight: "600",
-  },
-
-  noResult: {
-    marginTop: 20,
-    textAlign: "center",
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  noResult: { marginTop: 20, textAlign: "center", color: "white", fontSize: 18, fontWeight: "bold" },
 });
