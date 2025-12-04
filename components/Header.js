@@ -25,11 +25,11 @@ export default function Header({ navigation }) {
       {open && (
         <View style={styles.dropdown}>
 
-          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Monsters"); }}>
+          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Home"); }}>
             <Text style={styles.link}>Accueil</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("MonsterDetail"); }}>
+          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Monsters"); }}>
             <Text style={styles.link}>Les monstres</Text>
           </TouchableOpacity>
 
