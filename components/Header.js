@@ -8,12 +8,15 @@ export default function Header({ navigation }) {
     <View>
       <View style={styles.container}>
 
-      
-        <Image 
-          source={require("../assets/icons/logo.png")} 
-          style={styles.logo} 
-        />
+        {/* LOGO */}
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image 
+            source={require("../assets/icons/logo.png")} 
+            style={styles.logo} 
+          />
+        </TouchableOpacity>
 
+        {/* MENU BURGER */}
         <TouchableOpacity onPress={() => setOpen(!open)}>
           <Image 
             source={require("../assets/icons/menu.png")} 
@@ -22,6 +25,7 @@ export default function Header({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      {/* DROPDOWN MENU */}
       {open && (
         <View style={styles.dropdown}>
 
@@ -39,6 +43,11 @@ export default function Header({ navigation }) {
 
           <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Treasures"); }}>
             <Text style={styles.link}>Les trésors</Text>
+          </TouchableOpacity>
+
+          {/* ⭐ FAVORIS */}
+          <TouchableOpacity onPress={() => { setOpen(false); navigation.navigate("Favorites"); }}>
+            <Text style={styles.link}>⭐ Favoris</Text>
           </TouchableOpacity>
 
         </View>
