@@ -20,7 +20,6 @@ export default function HomeScreen({ navigation }) {
           Vous pouvez connaître le type de trésors, d'équipements et de monstres du monde Zelda.
         </Text>
       
-
       {/* Bouton d'entrée */}
       <TouchableOpacity 
         style={styles.btn} 
